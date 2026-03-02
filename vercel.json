@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/api/waitlist/join", "destination": "/api/waitlist/join" },
+    { "source": "/api/waitlist/me", "destination": "/api/waitlist/me" },
+    { "source": "/api/waitlist/leaderboard", "destination": "/api/waitlist/leaderboard" }
+  ]
+}

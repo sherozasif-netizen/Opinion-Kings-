@@ -1011,9 +1011,7 @@
   </script>
   <script>
     (function() {
-      var OK_API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-        ? window.location.origin + '/api/waitlist'
-        : '/api/waitlist';
+      var OK_API = '/api/waitlist';
 
       function getRef() {
         try { return new URLSearchParams(window.location.search).get('ref') || ''; } catch(e) { return ''; }
