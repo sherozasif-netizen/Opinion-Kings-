@@ -1,11 +1,16 @@
 const db = require('../_db');
 const { MAX_WAITLIST, getNextReward, displayName, userPayload } = require('../_utils');
 
-function findPosition(sortedUsers, userId) {
-  for (let i = 0; i < sortedUsers.length; i++) {
-    if (sortedUsers[i].id === userId) return i + 1;
+function calcRank(allUsers, userId) {
+  const sorted = [...allUsers].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+  const total = sorted.length;
+  for (let i = 0; i < sorted.length; i++) {
+    if (sorted[i].id === userId) {
+      const baseRank = MAX_WAITLIST - total + i + 1;
+      return Math.max(1, baseRank - (sorted[i].boost_points || 0));
+    }
   }
-  return sortedUsers.length;
+  return MAX_WAITLIST;
 }
 
 module.exports = async function handler(req, res) {
@@ -25,13 +30,17 @@ module.exports = async function handler(req, res) {
     }
     if (!user) return res.status(404).json({ error: 'User not found on waitlist.' });
 
-    const allUsers = await db.get('waitlist_users?select=id,full_name,email,boost_points,referral_count,vip_badge,created_at&order=boost_points.desc,created_at.asc');
+    const allUsers = await db.get('waitlist_users?select=id,full_name,email,boost_points,referral_count,vip_badge,created_at&order=created_at.asc');
     const total = allUsers.length;
-    const pos = findPosition(allUsers, user.id);
-    const rank = MAX_WAITLIST - total + pos;
+    const rank = calcRank(allUsers, user.id);
 
-    const top10 = allUsers.slice(0, 10).map((u, i) => ({
-      rank: MAX_WAITLIST - total + i + 1,
+    const ranked = allUsers.map((u, i) => ({
+      ...u,
+      rank: Math.max(1, MAX_WAITLIST - total + i + 1 - (u.boost_points || 0)),
+    })).sort((a, b) => a.rank - b.rank);
+
+    const top10 = ranked.slice(0, 10).map(u => ({
+      rank: u.rank,
       display_name: displayName(u),
       referrals: u.referral_count,
       boost_points: u.boost_points,

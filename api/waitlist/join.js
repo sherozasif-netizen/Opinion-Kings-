@@ -4,11 +4,16 @@ const {
   REWARD_MILESTONES, displayName, userPayload,
 } = require('../_utils');
 
-function findPosition(sortedUsers, userId) {
-  for (let i = 0; i < sortedUsers.length; i++) {
-    if (sortedUsers[i].id === userId) return i + 1;
+function calcRank(allUsers, userId) {
+  const sorted = [...allUsers].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+  const total = sorted.length;
+  for (let i = 0; i < sorted.length; i++) {
+    if (sorted[i].id === userId) {
+      const baseRank = MAX_WAITLIST - total + i + 1;
+      return Math.max(1, baseRank - (sorted[i].boost_points || 0));
+    }
   }
-  return sortedUsers.length;
+  return MAX_WAITLIST;
 }
 
 module.exports = async function handler(req, res) {
@@ -28,10 +33,9 @@ module.exports = async function handler(req, res) {
     const existingRows = await db.get(`waitlist_users?select=*&email=eq.${encodeURIComponent(email)}&limit=1`);
     if (existingRows.length > 0) {
       const existing = existingRows[0];
-      const allUsers = await db.get('waitlist_users?select=id,boost_points,created_at&order=boost_points.desc,created_at.asc');
+      const allUsers = await db.get('waitlist_users?select=id,boost_points,created_at&order=created_at.asc');
       const total = allUsers.length;
-      const pos = findPosition(allUsers, existing.id);
-      const rank = MAX_WAITLIST - total + pos;
+      const rank = calcRank(allUsers, existing.id);
       return res.json({ already_joined: true, ...userPayload(existing, rank, total) });
     }
 
@@ -78,13 +82,17 @@ module.exports = async function handler(req, res) {
     }
 
     const freshUser = (await db.get(`waitlist_users?select=*&id=eq.${user.id}&limit=1`))[0];
-    const allUsers = await db.get('waitlist_users?select=id,full_name,email,boost_points,referral_count,vip_badge,created_at&order=boost_points.desc,created_at.asc');
+    const allUsers = await db.get('waitlist_users?select=id,full_name,email,boost_points,referral_count,vip_badge,created_at&order=created_at.asc');
     const total = allUsers.length;
-    const pos = findPosition(allUsers, user.id);
-    const rank = MAX_WAITLIST - total + pos;
+    const rank = calcRank(allUsers, freshUser.id);
 
-    const top10 = allUsers.slice(0, 10).map((u, i) => ({
-      rank: MAX_WAITLIST - total + i + 1,
+    const ranked = allUsers.map((u, i) => ({
+      ...u,
+      rank: Math.max(1, MAX_WAITLIST - total + i + 1 - (u.boost_points || 0)),
+    })).sort((a, b) => a.rank - b.rank);
+
+    const top10 = ranked.slice(0, 10).map(u => ({
+      rank: u.rank,
       display_name: displayName(u),
       referrals: u.referral_count,
       boost_points: u.boost_points,
@@ -95,9 +103,9 @@ module.exports = async function handler(req, res) {
 
     if (referrer) {
       const rr = (await db.get(`waitlist_users?select=*&id=eq.${referrer.id}&limit=1`))[0];
-      const rPos = findPosition(allUsers, referrer.id);
+      const referrerRank = calcRank(allUsers.map(u => u.id === rr.id ? { ...u, boost_points: rr.boost_points } : u), rr.id);
       response.referrer_update = {
-        referrer_new_rank: MAX_WAITLIST - total + rPos,
+        referrer_new_rank: referrerRank,
         referrer_boost_points: rr.boost_points,
         referrer_referral_count: rr.referral_count,
       };
