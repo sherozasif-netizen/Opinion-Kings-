@@ -93,7 +93,7 @@ module.exports = async function handler(req, res) {
 
     let referrer = null;
     if (referral_code && referral_code.trim()) {
-      const cleanCode = referral_code.trim().toUpperCase();
+      const cleanCode = referral_code.trim().toUpperCase(); 
       const refRows = await db.get(`waitlist_users?select=*&referral_code=eq.${encodeURIComponent(cleanCode)}&limit=1`);
       referrer = refRows[0] || null;
       if (!referrer) return res.status(400).json({ error: 'Invalid referral code.' });
