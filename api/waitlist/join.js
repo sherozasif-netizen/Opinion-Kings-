@@ -9,12 +9,16 @@ const {
 } = require('../_security');
 
 function calcRank(allUsers, userId) {
-  const sorted = [...allUsers].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+  const sorted = [...allUsers].sort((a, b) => {
+    if ((b.boost_points || 0) !== (a.boost_points || 0)) {
+      return (b.boost_points || 0) - (a.boost_points || 0);
+    }
+    return new Date(a.created_at) - new Date(b.created_at);
+  });
   const total = sorted.length;
   for (let i = 0; i < sorted.length; i++) {
     if (sorted[i].id === userId) {
-      const baseRank = MAX_WAITLIST - total + i + 1;
-      return Math.max(1, baseRank - (sorted[i].boost_points || 0));
+      return MAX_WAITLIST - total + i + 1;
     }
   }
   return MAX_WAITLIST;
@@ -120,13 +124,16 @@ module.exports = async function handler(req, res) {
         boost_points: referrer.boost_points + BOOST_PER_REFERRAL,
       });
 
-      const updatedRef = (await db.get(`waitlist_users?select=*&id=eq.${referrer.id}&limit=1`))[0];
+      let updatedRef = (await db.get(`waitlist_users?select=*&id=eq.${referrer.id}&limit=1`))[0];
       for (const m of REWARD_MILESTONES) {
         if (updatedRef.referral_count >= m.threshold) {
           const alreadyRows = await db.get(`reward_events?select=id&user_id=eq.${referrer.id}&type=eq.${encodeURIComponent(m.type)}&limit=1`);
           if (alreadyRows.length === 0) {
             await db.post('reward_events', { user_id: referrer.id, type: m.type, amount: m.credits });
-            if (m.credits > 0) await db.patch('waitlist_users', `id=eq.${referrer.id}`, { credits_earned: updatedRef.credits_earned + m.credits });
+            if (m.credits > 0) {
+              await db.patch('waitlist_users', `id=eq.${referrer.id}`, { credits_earned: updatedRef.credits_earned + m.credits });
+              updatedRef.credits_earned += m.credits;
+            }
             if (m.vip) await db.patch('waitlist_users', `id=eq.${referrer.id}`, { vip_badge: true });
           }
         }
@@ -138,13 +145,15 @@ module.exports = async function handler(req, res) {
     const total = allUsers.length;
     const rank = calcRank(allUsers, freshUser.id);
 
-    const ranked = allUsers.map((u, i) => ({
-      ...u,
-      rank: Math.max(1, MAX_WAITLIST - total + i + 1 - (u.boost_points || 0)),
-    })).sort((a, b) => a.rank - b.rank);
+    const sorted = [...allUsers].sort((a, b) => {
+      if ((b.boost_points || 0) !== (a.boost_points || 0)) {
+        return (b.boost_points || 0) - (a.boost_points || 0);
+      }
+      return new Date(a.created_at) - new Date(b.created_at);
+    });
 
-    const top10 = ranked.slice(0, 10).map(u => ({
-      rank: u.rank,
+    const top10 = sorted.slice(0, 10).map((u, i) => ({
+      rank: MAX_WAITLIST - total + i + 1,
       display_name: displayName(u),
       referrals: u.referral_count,
       boost_points: u.boost_points,

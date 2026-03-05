@@ -158,11 +158,14 @@ router.post('/join', (req, res) => {
   if (!full_name || !full_name.trim()) {
     return res.status(400).json({ error: 'Full name is required.' });
   }
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+
+  const cleanEmail = email ? email.trim().toLowerCase() : null;
+
+  if (cleanEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
     return res.status(400).json({ error: 'Invalid email format.' });
   }
 
-  const existing = email ? s.findByEmail.get(email) : s.findByPhone.get(phone);
+  const existing = cleanEmail ? s.findByEmail.get(cleanEmail) : s.findByPhone.get(phone);
   if (existing) {
     const totalUsers = s.countUsers.get().cnt;
     const rank = computeDisplayRank(existing.id, totalUsers);
@@ -180,7 +183,7 @@ router.post('/join', (req, res) => {
     if (!referrer) {
       return res.status(400).json({ error: 'Invalid referral code.' });
     }
-    if (referrer.email && referrer.email === email) {
+    if (referrer.email && referrer.email === cleanEmail) {
       return res.status(400).json({ error: 'You cannot refer yourself.' });
     }
   }
@@ -190,7 +193,7 @@ router.post('/join', (req, res) => {
   const joinTx = db.transaction(() => {
     const info = s.insertUser.run({
       full_name: full_name.trim(),
-      email: email || null,
+      email: cleanEmail || null,
       phone: phone || null,
       referral_code: newCode,
       referrer_id: referrer ? referrer.id : null,
@@ -253,7 +256,7 @@ router.get('/me', (req, res) => {
   if (user_id) {
     user = s.findById.get(Number(user_id));
   } else if (email) {
-    user = s.findByEmail.get(email);
+    user = s.findByEmail.get(email.trim().toLowerCase());
   }
 
   if (!user) {
