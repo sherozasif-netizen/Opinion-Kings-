@@ -85,7 +85,7 @@ module.exports = async function handler(req, res) {
       const rank = calcRank(allUsers, existing.id);
       return res.json({ already_joined: true, ...userPayload(existing, rank, total) });
     }
-
+ 
     const allBefore = await db.get('waitlist_users?select=id');
     if (allBefore.length >= MAX_WAITLIST) {
       return res.status(409).json({ error: 'Waitlist is full. Stay tuned for launch!' });
