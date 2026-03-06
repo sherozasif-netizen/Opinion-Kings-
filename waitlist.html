@@ -1343,9 +1343,13 @@
 
         googleBtn.onclick = function() {
           errorEl.textContent = '';
-          var clientId = window.__OK_GOOGLE_CLIENT_ID;
+          var clientId = window.__OK_GOOGLE_CLIENT_ID || '388866585978-26m4s08v39nk9d9tqg0dhrfj7i05v16k.apps.googleusercontent.com';
           if (!clientId) {
             errorEl.textContent = 'Google sign-in is not configured yet.';
+            return;
+          }
+          if (typeof google === 'undefined' || !google.accounts || !google.accounts.id) {
+            errorEl.textContent = 'Google sign-in is loading. Please try again in a moment.';
             return;
           }
           google.accounts.id.initialize({
