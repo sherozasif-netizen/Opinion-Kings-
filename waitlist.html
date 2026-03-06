@@ -55,7 +55,7 @@
         return origAnimate.call(this, keyframes, options);
       };
       var imgOldKey = 'framerusercontent.com/images/bwrnBJGQrVv3p54GisJaGc1r8';
-      var imgNewUrl =  + new_url + ;
+      var imgNewUrl = 'https://cdn.shopify.com/s/files/1/0920/7591/7591/files/Screenshot_2026-02-26_at_10.05.09_PM.png?v=1772224401';
       var imgUrlRe = /https?:\/\/framerusercontent\.com\/images\/bwrnBJGQrVv3p54GisJaGc1r8[^\s,"']*/g;
       function replaceImgUrl(s) {
         if (typeof s === 'string' && s.indexOf(imgOldKey) !== -1) {
@@ -164,6 +164,9 @@
         while (node = walker.nextNode()) {
           if (node.nodeValue && node.nodeValue.indexOf('Clario') !== -1) {
             node.nodeValue = node.nodeValue.replace(/Clario/g, 'Opinion Kings');
+          }
+          if (node.nodeValue && node.nodeValue.indexOf("Opinion Kings's") !== -1) {
+            node.nodeValue = node.nodeValue.replace(/Opinion Kings's/g, "Opinion Kings'");
           }
         }
       }
@@ -1498,22 +1501,15 @@
         setTimeout(function() { nameInput.focus(); }, 400);
       }
 
-      var _initAttempts = 0;
-      function init() {
-        var heading = document.querySelector('.framer-1gqivqc[data-framer-name="Bottom"]')
+      var _okInitDone = false;
+
+      function findHeading() {
+        return document.querySelector('.framer-1gqivqc[data-framer-name="Bottom"]')
           || document.querySelector('[data-framer-name="Bottom"]')
           || document.querySelector('.framer-1gqivqc');
+      }
 
-        _initAttempts++;
-        if (!heading && _initAttempts < 30) { setTimeout(init, 300); return; }
-
-        if (!heading) {
-          heading = document.createElement('div');
-          heading.id = 'ok-wl-fallback';
-          var main = document.getElementById('main') || document.body;
-          main.appendChild(heading);
-        }
-
+      function inject(heading) {
         heading.innerHTML = '';
         heading.style.cssText = 'display:flex;flex-direction:column;align-items:center;padding:20px 20px 60px;';
 
@@ -1542,11 +1538,45 @@
         }
       }
 
+      function ensureForm() {
+        var heading = findHeading();
+        if (!heading) return;
+        if (heading.querySelector('#ok-wl-app, #ok-dashboard')) return;
+        inject(heading);
+      }
+
+      function init() {
+        if (_okInitDone) return;
+        var heading = findHeading();
+
+        if (!heading) {
+          heading = document.createElement('div');
+          heading.id = 'ok-wl-fallback';
+          var main = document.getElementById('main') || document.body;
+          main.appendChild(heading);
+        }
+
+        _okInitDone = true;
+        inject(heading);
+
+        // Watch for Framer re-renders that wipe our form
+        new MutationObserver(function() {
+          ensureForm();
+        }).observe(heading, { childList: true });
+      }
+
+      // Try early, retry on DOM ready
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() { setTimeout(init, 300); });
       } else {
         setTimeout(init, 300);
       }
+      // Watch for the target element to appear in the DOM
+      var _okWatcher = new MutationObserver(function() {
+        if (_okInitDone) { _okWatcher.disconnect(); return; }
+        if (findHeading()) init();
+      });
+      _okWatcher.observe(document.documentElement, { childList: true, subtree: true });
     })();
   </script>
     <!-- End of bodyEnd -->
