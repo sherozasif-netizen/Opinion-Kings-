@@ -337,11 +337,12 @@
           var barWrap = document.createElement('div');
           barWrap.className = 'ok-market-bar-wrap';
           var yes = document.createElement('span'); 
+
           yes.className = 'ok-market-label yes';
           yes.textContent = 'YES';
           barWrap.appendChild(yes);
           var track = document.createElement('div');
-          track.className = 'ok-market-bar-track';
+          track.className = 'ok-market-bar-track'; 
           var fill = document.createElement('div');
           fill.className = 'ok-market-bar-fill';
           fill.setAttribute('data-pct', m.pct);
