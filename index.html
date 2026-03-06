@@ -6,12 +6,9 @@
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
 
 
-
+  
   <!-- Start of headStart -->
   <script>
     (function() {
@@ -314,9 +311,9 @@
         }
       }
       var marketsData = [
-        { q: 'Will Bitcoin hit $150K this year?', pct: 72, vol: '$2.4M', traders: '8.1K', cat: 'Crypto' },
-        { q: 'Will Trump win 2028?', pct: 38, vol: '$5.1M', traders: '14.3K', cat: 'Politics' },
-        { q: 'Will Apple cross $4T market cap?', pct: 61, vol: '$1.8M', traders: '6.7K', cat: 'Stocks' }
+        { q: 'Will Bitcoin hit $150K this year?', pct: 72, vol: '$2.4M', traders: '8.1K' },
+        { q: 'Will Trump win 2028?', pct: 38, vol: '$5.1M', traders: '14.3K' },
+        { q: 'Will Apple cross $4T market cap?', pct: 61, vol: '$1.8M', traders: '6.7K' }
       ];
       function injectMarkets() {
         if (!document.body) return;
@@ -325,42 +322,27 @@
         if (!comparison) return;
         var sec = document.createElement('section');
         sec.id = 'ok-markets-section';
-        sec.className = 'ok-fade-in';
-        var lbl = document.createElement('p');
-        lbl.className = 'ok-section-label';
-        lbl.textContent = 'Live Markets';
-        sec.appendChild(lbl);
         var h2 = document.createElement('h2');
         h2.textContent = 'Markets Shaping the World';
         sec.appendChild(h2);
-        var sub = document.createElement('p');
-        sub.className = 'ok-section-sub';
-        sub.textContent = 'Real-time prediction markets on the events that matter most.';
-        sec.appendChild(sub);
         var grid = document.createElement('div');
         grid.className = 'ok-markets-grid';
         marketsData.forEach(function(m) {
           var card = document.createElement('div');
           card.className = 'ok-market-card';
-          var header = document.createElement('div');
-          header.className = 'ok-market-header';
           var q = document.createElement('p');
           q.className = 'ok-market-question';
           q.textContent = m.q;
-          header.appendChild(q);
-          var liveTag = document.createElement('span');
-          liveTag.className = 'ok-market-live-tag';
-          liveTag.textContent = 'Live';
-          header.appendChild(liveTag);
-          card.appendChild(header);
+          card.appendChild(q);
           var barWrap = document.createElement('div');
           barWrap.className = 'ok-market-bar-wrap';
-          var yes = document.createElement('span');
+          var yes = document.createElement('span'); 
+
           yes.className = 'ok-market-label yes';
           yes.textContent = 'YES';
           barWrap.appendChild(yes);
           var track = document.createElement('div');
-          track.className = 'ok-market-bar-track';
+          track.className = 'ok-market-bar-track'; 
           var fill = document.createElement('div');
           fill.className = 'ok-market-bar-fill';
           fill.setAttribute('data-pct', m.pct);
@@ -373,7 +355,7 @@
           card.appendChild(barWrap);
           var meta = document.createElement('div');
           meta.className = 'ok-market-meta';
-          meta.innerHTML = '<span>Volume: <strong>' + m.vol + '</strong></span><span>Traders: <strong>' + m.traders + '</strong></span><span>Category: <strong>' + m.cat + '</strong></span>';
+          meta.innerHTML = '<span>Volume: <strong>' + m.vol + '</strong></span><span>Traders: <strong>' + m.traders + '</strong></span>';
           card.appendChild(meta);
           grid.appendChild(card);
         });
@@ -386,72 +368,31 @@
           }
         }, 100);
       }
-      function injectStatsBar() {
-        if (!document.body) return;
-        if (document.getElementById('ok-stats-bar')) return;
-        var mkts = document.getElementById('ok-markets-section');
-        if (!mkts) return;
-        var bar = document.createElement('div');
-        bar.id = 'ok-stats-bar';
-        bar.className = 'ok-fade-in';
-        var inner = document.createElement('div');
-        inner.className = 'ok-stats-inner';
-        var stats = [
-          { num: '5,000', txt: 'Waitlist Spots' },
-          { num: '50+', txt: 'Markets at Launch' },
-          { num: '$10M+', txt: 'Projected Volume' },
-          { num: '24/7', txt: 'Live Trading' }
-        ];
-        stats.forEach(function(s) {
-          var block = document.createElement('div');
-          block.className = 'ok-stat-block';
-          var num = document.createElement('div');
-          num.className = 'ok-stat-num';
-          num.textContent = s.num;
-          block.appendChild(num);
-          var txt = document.createElement('div');
-          txt.className = 'ok-stat-txt';
-          txt.textContent = s.txt;
-          block.appendChild(txt);
-          inner.appendChild(block);
-        });
-        bar.appendChild(inner);
-        mkts.parentNode.insertBefore(bar, mkts.nextSibling);
-      }
       function injectReferral() {
         if (!document.body) return;
         if (document.getElementById('ok-referral-section')) return;
-        var after = document.getElementById('ok-stats-bar') || document.getElementById('ok-markets-section');
+        var after = document.getElementById('ok-markets-section');
         if (!after) return;
         var sec = document.createElement('section');
         sec.id = 'ok-referral-section';
-        sec.className = 'ok-fade-in';
-        var lbl = document.createElement('p');
-        lbl.className = 'ok-section-label';
-        lbl.textContent = 'Referral Rewards';
-        sec.appendChild(lbl);
         var h2 = document.createElement('h2');
         h2.textContent = 'Climb the Waitlist. Earn Before Launch.';
         sec.appendChild(h2);
         var copy = document.createElement('p');
         copy.id = 'ok-referral-copy';
-        copy.innerHTML = 'Invite friends. Move up instantly. Unlock real trading credits.';
+        copy.innerHTML = 'Invite friends. Move up instantly. Unlock trading credits.';
         sec.appendChild(copy);
         var grid = document.createElement('div');
         grid.className = 'ok-rewards-grid';
         var tiers = [
-          { refs: '1 Referral', value: 'Skip 100', desc: 'spots on the waitlist', icon: '\u{1F680}' },
-          { refs: '5 Referrals', value: '$10', desc: 'in trading credits', icon: '\u{1F4B0}' },
-          { refs: '25 Referrals', value: '$75', desc: 'in trading credits', icon: '\u{1F4B8}' },
-          { refs: '50 Referrals', value: '$300', desc: '+ VIP Founder badge', vip: true, icon: '\u{1F451}' }
+          { refs: '1 Referral', value: 'Skip 100', desc: 'spots on the waitlist' },
+          { refs: '5 Referrals', value: '$10', desc: 'in trading credits' },
+          { refs: '25 Referrals', value: '$75', desc: 'in trading credits' },
+          { refs: '50 Referrals', value: '$300', desc: '+ VIP badge', vip: true }
         ];
         tiers.forEach(function(t) {
           var card = document.createElement('div');
           card.className = 'ok-reward-card' + (t.vip ? ' vip' : '');
-          var ico = document.createElement('div');
-          ico.className = 'ok-reward-icon';
-          ico.textContent = t.icon;
-          card.appendChild(ico);
           var refs = document.createElement('p');
           refs.className = 'ok-reward-referrals';
           refs.textContent = t.refs;
@@ -477,7 +418,7 @@
         ctaWrap.id = 'ok-referral-cta';
         var cta = document.createElement('a');
         cta.href = 'waitlist.html';
-        cta.innerHTML = 'Join & Start Climbing \u2192';
+        cta.textContent = 'Join & Start Climbing';
         ctaWrap.appendChild(cta);
         sec.appendChild(ctaWrap);
         after.parentNode.insertBefore(sec, after.nextSibling);
@@ -495,11 +436,6 @@
         if (!after) return;
         var sec = document.createElement('section');
         sec.id = 'ok-compliance-section';
-        sec.className = 'ok-fade-in';
-        var lbl = document.createElement('p');
-        lbl.className = 'ok-section-label';
-        lbl.textContent = 'Trust & Safety';
-        sec.appendChild(lbl);
         var h2 = document.createElement('h2');
         h2.textContent = 'Built Compliance-First';
         sec.appendChild(h2);
@@ -541,27 +477,6 @@
         try { ref = new URLSearchParams(window.location.search).get('ref') || ''; } catch(e) {}
         window.location.href = 'waitlist.html' + (ref ? '?ref=' + encodeURIComponent(ref) : '');
       }
-      function injectHeroGlow() {
-        if (!document.body) return;
-        if (document.querySelector('.ok-hero-glow')) return;
-        var hero = document.querySelector('section[id="home"], section.framer-bggaun');
-        if (!hero) return;
-        if (hero.style.position !== 'relative') hero.style.position = 'relative';
-        hero.style.overflow = 'visible';
-        var glow = document.createElement('div');
-        glow.className = 'ok-hero-glow';
-        hero.insertBefore(glow, hero.firstChild);
-      }
-      function injectSocialProof() {
-        if (!document.body) return;
-        if (document.getElementById('ok-social-proof')) return;
-        var wrapper = document.getElementById('ok-waitlist-wrapper');
-        if (!wrapper) return;
-        var proof = document.createElement('div');
-        proof.id = 'ok-social-proof';
-        proof.innerHTML = '<div class="ok-proof-item"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span><strong>2,800+</strong> joined</span></div><div class="ok-proof-item"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>U.S. regulated</span></div><div class="ok-proof-item"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>Free to join</span></div>';
-        wrapper.parentNode.insertBefore(proof, wrapper.nextSibling);
-      }
       function injectWaitlistForm() {
         if (!document.body) return;
         if (document.getElementById('ok-waitlist-wrapper')) return;
@@ -575,34 +490,19 @@
         var fakeForm = document.createElement('div');
         fakeForm.id = 'ok-waitlist-form';
         var fakeInput = document.createElement('div');
-        fakeInput.style.cssText = 'flex:1;padding:16px 22px;color:rgba(255,255,255,0.35);font-family:Manrope,sans-serif;font-size:15px;letter-spacing:-0.01em;pointer-events:none;user-select:none;';
+        fakeInput.style.cssText = 'flex:1;padding:14px 20px;color:rgba(255,255,255,0.4);font-family:Manrope,sans-serif;font-size:15px;letter-spacing:-0.01em;pointer-events:none;user-select:none;';
         fakeInput.textContent = 'Enter your email address';
         var btn = document.createElement('div');
-        btn.style.cssText = 'padding:16px 32px;background:linear-gradient(135deg,#D3B17C,#e8cd9e);color:#000;font-family:Manrope,sans-serif;font-weight:700;font-size:15px;white-space:nowrap;pointer-events:none;user-select:none;';
-        btn.innerHTML = 'Join the Waitlist \u2192';
+        btn.style.cssText = 'padding:14px 28px;background:#D3B17C;color:#000;font-family:Manrope,sans-serif;font-weight:600;font-size:15px;white-space:nowrap;pointer-events:none;user-select:none;';
+        btn.textContent = 'Join the Waitlist';
         fakeForm.appendChild(fakeInput);
         fakeForm.appendChild(btn);
         var micro = document.createElement('p');
         micro.id = 'ok-microcopy';
-        micro.textContent = 'Early access \u00B7 Trading credits \u00B7 Founder status';
+        micro.textContent = 'Early access. Trading credits. Founder status.';
         wrapper.appendChild(fakeForm);
         wrapper.appendChild(micro);
         ctaDiv.parentNode.insertBefore(wrapper, ctaDiv);
-      }
-      function initScrollObserver() {
-        if (window._okScrollObs) return;
-        window._okScrollObs = true;
-        var observer = new IntersectionObserver(function(entries) {
-          entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('ok-visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.15 });
-        document.querySelectorAll('.ok-fade-in').forEach(function(el) {
-          observer.observe(el);
-        });
       }
       function fixFaq() {
         var sixthItems = document.querySelectorAll('.framer-1js9qsl-container');
@@ -617,15 +517,11 @@
         fixNavbar();
         fixHeroText();
         fixFaq();
-        injectHeroGlow();
         injectWaitlistForm();
-        injectSocialProof();
         injectHiwTagline();
         injectMarkets();
-        injectStatsBar();
         injectReferral();
         injectCompliance();
-        initScrollObserver();
         if (document.body) {
           sweepTextNodes(document.body);
           sweepAttributes(document.body);
@@ -655,7 +551,6 @@
   </script>
   <!-- End of headStart -->
   <style id="color-override">
-    html { scroll-behavior: smooth; }
     *, *::before, *::after, :root, body {
       --token-2d3de992-80f6-43cc-b5d5-16857da63015: #D3B17C !important;
     }
@@ -783,85 +678,27 @@
       margin: 0 !important;
       padding: 0 !important;
     }
-
-    /* ── Hero aurora glow ─────────────────────────── */
-    .ok-hero-glow {
-      position: absolute;
-      top: -200px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 900px;
-      height: 600px;
-      background: radial-gradient(ellipse at center, rgba(211,177,124,0.12) 0%, rgba(211,177,124,0.04) 40%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-      animation: okAuroraFloat 8s ease-in-out infinite;
-    }
-    @keyframes okAuroraFloat {
-      0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
-      50% { transform: translateX(-50%) scale(1.08); opacity: 1; }
-    }
-
-    /* ── Social proof ticker ──────────────────────── */
-    #ok-social-proof {
-      display: flex;
-      justify-content: center;
-      gap: 32px;
-      margin-top: 24px;
-      flex-wrap: wrap;
-    }
-    .ok-proof-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: "Manrope", sans-serif;
-      font-size: 14px;
-      color: rgba(255,255,255,0.5);
-    }
-    .ok-proof-item svg {
-      width: 16px;
-      height: 16px;
-      stroke: #D3B17C;
-      fill: none;
-      stroke-width: 2;
-      flex-shrink: 0;
-    }
-    .ok-proof-item strong {
-      color: #fff;
-      font-weight: 700;
-    }
-
-    /* ── Waitlist form (hero) ─────────────────────── */
     #ok-waitlist-wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 16px;
       width: 100%;
-      max-width: 500px;
+      max-width: 480px;
       margin: 0 auto;
-      position: relative;
     }
     #ok-waitlist-form {
       display: flex;
       width: 100%;
       gap: 0;
-      border-radius: 16px;
+      border-radius: 14px;
       overflow: hidden;
       background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      transition: border-color 0.3s, box-shadow 0.3s;
-    }
-    #ok-waitlist-form:hover,
-    #ok-waitlist-form:focus-within {
-      border-color: rgba(211,177,124,0.35);
-      box-shadow: 0 0 30px rgba(211,177,124,0.08), 0 8px 32px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
     }
     #ok-waitlist-form input[type="email"] {
       flex: 1;
-      padding: 16px 22px;
+      padding: 14px 20px;
       background: transparent;
       border: none;
       outline: none;
@@ -871,33 +708,22 @@
       letter-spacing: -0.01em;
     }
     #ok-waitlist-form input[type="email"]::placeholder {
-      color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.4);
     }
     #ok-waitlist-form button {
-      padding: 16px 32px;
-      background: linear-gradient(135deg, #D3B17C, #e8cd9e);
+      padding: 14px 28px;
+      background: #D3B17C;
       border: none;
       color: #000;
       font-family: "Manrope", sans-serif;
-      font-weight: 700;
+      font-weight: 600;
       font-size: 15px;
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.25s;
-      position: relative;
+      transition: background 0.2s;
     }
     #ok-waitlist-form button:hover {
-      background: linear-gradient(135deg, #c9a46e, #D3B17C);
-      padding-right: 36px;
-    }
-    #ok-waitlist-form button::after {
-      content: '\2192';
-      margin-left: 6px;
-      transition: transform 0.25s;
-      display: inline-block;
-    }
-    #ok-waitlist-form button:hover::after {
-      transform: translateX(3px);
+      background: #c9a46e;
     }
     #ok-microcopy {
       font-family: "Manrope", sans-serif;
@@ -909,89 +735,31 @@
     .framer-1dj58g9[data-framer-name="CTA"] {
       display: none !important;
     }
-
-    /* ── Section fade-in on scroll ────────────────── */
-    .ok-fade-in {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-    .ok-fade-in.ok-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── Markets section ──────────────────────────── */
     #ok-markets-section {
       width: 100%;
       max-width: 1000px;
       margin: 0 auto;
       padding: 100px 40px;
     }
-    .ok-section-label {
-      font-family: "Manrope", sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      color: #D3B17C;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      text-align: center;
-      margin: 0 0 16px;
-    }
     #ok-markets-section h2 {
       font-family: "Manrope", sans-serif;
       font-size: 48px;
-      font-weight: 600;
+      font-weight: 500;
       letter-spacing: -0.04em;
       color: #fff;
       text-align: center;
-      margin: 0 0 20px;
-    }
-    .ok-section-sub {
-      font-family: "Manrope", sans-serif;
-      font-size: 18px;
-      color: rgba(255,255,255,0.45);
-      text-align: center;
-      margin: 0 0 56px;
-      line-height: 1.6;
+      margin: 0 0 60px;
     }
     .ok-markets-grid {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
     }
     .ok-market-card {
-      background: rgba(13,13,13,0.8);
+      background: rgb(13,13,13);
       border-radius: 20px;
       padding: 32px 36px;
-      border: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-    .ok-market-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(211,177,124,0.2), transparent);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .ok-market-card:hover {
-      border-color: rgba(211,177,124,0.15);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 20px rgba(211,177,124,0.04);
-    }
-    .ok-market-card:hover::before { opacity: 1; }
-    .ok-market-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
+      box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.04), 0 1px 3px rgba(0,0,0,0.4);
     }
     .ok-market-question {
       font-family: "Manrope", sans-serif;
@@ -999,33 +767,8 @@
       font-weight: 600;
       color: #fff;
       letter-spacing: -0.02em;
-      margin: 0;
-      flex: 1;
+      margin: 0 0 20px;
     }
-    .ok-market-live-tag {
-      font-family: "Manrope", sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      color: #22c55e;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 4px 10px;
-      border-radius: 100px;
-      background: rgba(34,197,94,0.1);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      flex-shrink: 0;
-    }
-    .ok-market-live-tag::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #22c55e;
-      animation: okMktPulse 1.5s ease-in-out infinite;
-    }
-    @keyframes okMktPulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
     .ok-market-bar-wrap {
       display: flex;
       align-items: center;
@@ -1043,7 +786,7 @@
     .ok-market-label.no { color: rgba(255,255,255,0.3); }
     .ok-market-bar-track {
       flex: 1;
-      height: 8px;
+      height: 10px;
       background: rgba(255,255,255,0.06);
       border-radius: 10px;
       overflow: hidden;
@@ -1052,15 +795,14 @@
     .ok-market-bar-fill {
       height: 100%;
       border-radius: 10px;
-      background: linear-gradient(90deg, #c9a46e, #D3B17C, #e8cd9e);
+      background: linear-gradient(90deg, #D3B17C, #e8cd9e);
       width: 0%;
-      transition: width 2s cubic-bezier(0.22, 1, 0.36, 1);
-      box-shadow: 0 0 12px rgba(211,177,124,0.3);
+      transition: width 1.8s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .ok-market-pct {
       font-family: "Manrope", sans-serif;
-      font-size: 24px;
-      font-weight: 800;
+      font-size: 22px;
+      font-weight: 700;
       color: #D3B17C;
       letter-spacing: -0.02em;
       min-width: 52px;
@@ -1070,8 +812,6 @@
       display: flex;
       gap: 24px;
       margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255,255,255,0.04);
     }
     .ok-market-meta span {
       font-family: "Manrope", sans-serif;
@@ -1079,35 +819,26 @@
       color: rgba(255,255,255,0.35);
     }
     .ok-market-meta strong {
-      color: rgba(255,255,255,0.6);
+      color: rgba(255,255,255,0.55);
       font-weight: 600;
     }
     @media (max-width: 809px) {
       #ok-markets-section { padding: 60px 20px; }
-      #ok-markets-section h2 { font-size: 32px; margin-bottom: 12px; }
-      .ok-section-sub { font-size: 15px; margin-bottom: 36px; }
+      #ok-markets-section h2 { font-size: 32px; margin-bottom: 40px; }
       .ok-market-card { padding: 24px 20px; }
       .ok-market-question { font-size: 17px; }
-      .ok-market-pct { font-size: 20px; min-width: 42px; }
-      .ok-market-meta { gap: 16px; }
+      .ok-market-pct { font-size: 18px; min-width: 42px; }
     }
-
-    /* ── How it works tagline ─────────────────────── */
     #ok-hiw-tagline {
       font-family: "Manrope", sans-serif;
-      font-size: 22px;
-      font-weight: 700;
-      background: linear-gradient(135deg, #D3B17C, #e8cd9e, #D3B17C);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-size: 20px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.5);
       letter-spacing: -0.02em;
       text-align: center;
       margin: 40px auto 0;
       padding: 0 20px;
     }
-
-    /* ── Referral section ─────────────────────────── */
     #ok-referral-section {
       width: 100%;
       max-width: 1000px;
@@ -1117,7 +848,7 @@
     #ok-referral-section h2 {
       font-family: "Manrope", sans-serif;
       font-size: 48px;
-      font-weight: 600;
+      font-weight: 500;
       letter-spacing: -0.04em;
       color: #fff;
       text-align: center;
@@ -1126,7 +857,7 @@
     #ok-referral-copy {
       font-family: "Manrope", sans-serif;
       font-size: 18px;
-      color: rgba(255,255,255,0.45);
+      color: rgba(255,255,255,0.5);
       text-align: center;
       line-height: 1.7;
       margin: 0 0 48px;
@@ -1138,55 +869,35 @@
       margin-bottom: 48px;
     }
     .ok-reward-card {
-      background: rgba(13,13,13,0.8);
+      background: rgb(13,13,13);
       border-radius: 20px;
-      padding: 32px 24px 28px;
+      padding: 28px 24px;
       text-align: center;
       position: relative;
       overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.06);
-      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-    }
-    .ok-reward-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, #D3B17C, transparent);
-      opacity: 0;
-      transition: opacity 0.35s;
+      box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.04), 0 1px 3px rgba(0,0,0,0.4);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
     .ok-reward-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(211,177,124,0.2);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(211,177,124,0.06);
+      transform: translateY(-4px);
+      box-shadow: inset 0 1px 0 0 rgba(211,177,124,0.12), 0 8px 24px rgba(0,0,0,0.5);
     }
-    .ok-reward-card:hover::before { opacity: 1; }
     .ok-reward-card.vip {
       border: 1px solid rgba(211,177,124,0.3);
-      background: linear-gradient(180deg, rgba(211,177,124,0.04) 0%, rgba(13,13,13,0.8) 100%);
-    }
-    .ok-reward-card.vip::before { opacity: 0.6; }
-    .ok-reward-icon {
-      font-size: 32px;
-      margin-bottom: 12px;
-      line-height: 1;
     }
     .ok-reward-referrals {
       font-family: "Manrope", sans-serif;
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 13px;
+      font-weight: 600;
       color: #D3B17C;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
       margin: 0 0 12px;
     }
     .ok-reward-value {
       font-family: "Manrope", sans-serif;
       font-size: 28px;
-      font-weight: 800;
+      font-weight: 700;
       color: #fff;
       letter-spacing: -0.02em;
       margin: 0 0 8px;
@@ -1195,15 +906,10 @@
       font-family: "Manrope", sans-serif;
       font-size: 14px;
       color: rgba(255,255,255,0.4);
-      line-height: 1.5;
       margin: 0;
     }
     .ok-reward-card.vip .ok-reward-value {
-      background: linear-gradient(135deg, #D3B17C, #e8cd9e);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-size: 32px;
+      color: #D3B17C;
     }
     .ok-vip-badge {
       display: inline-block;
@@ -1214,10 +920,9 @@
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 5px 12px;
-      border-radius: 100px;
-      margin-top: 12px;
-      border: 1px solid rgba(211,177,124,0.2);
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-top: 10px;
     }
     #ok-referral-cta {
       display: flex;
@@ -1226,48 +931,30 @@
     #ok-referral-cta a {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 18px 40px;
-      background: linear-gradient(135deg, #D3B17C, #e8cd9e);
+      gap: 8px;
+      padding: 16px 36px;
+      background: #D3B17C;
       color: #000;
       font-family: "Manrope", sans-serif;
       font-size: 16px;
       font-weight: 700;
-      border-radius: 100px;
+      border-radius: 23px;
       text-decoration: none;
-      box-shadow: 0 8px 30px rgba(211,177,124,0.3);
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-    #ok-referral-cta a::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.5s;
+      box-shadow: 0 8px 20px rgba(211,177,124,0.32);
+      transition: background 0.2s, transform 0.2s;
     }
     #ok-referral-cta a:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(211,177,124,0.4);
-    }
-    #ok-referral-cta a:hover::before {
-      left: 100%;
+      background: #c9a46e;
+      transform: translateY(-2px);
     }
     @media (max-width: 809px) {
       #ok-referral-section { padding: 60px 20px; }
       #ok-referral-section h2 { font-size: 30px; }
       #ok-referral-copy { font-size: 16px; }
       .ok-rewards-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-      .ok-reward-card { padding: 24px 16px 22px; }
+      .ok-reward-card { padding: 22px 16px; }
       .ok-reward-value { font-size: 22px; }
-      .ok-reward-icon { font-size: 26px; }
     }
-
-    /* ── Compliance section ────────────────────────── */
     #ok-compliance-section {
       width: 100%;
       max-width: 1000px;
@@ -1277,7 +964,7 @@
     #ok-compliance-section h2 {
       font-family: "Manrope", sans-serif;
       font-size: 48px;
-      font-weight: 600;
+      font-weight: 500;
       letter-spacing: -0.04em;
       color: #fff;
       text-align: center;
@@ -1289,33 +976,23 @@
       gap: 16px;
     }
     .ok-compliance-card {
-      background: rgba(13,13,13,0.8);
+      background: rgb(13,13,13);
       border-radius: 20px;
       padding: 32px 28px;
       display: flex;
       align-items: flex-start;
       gap: 18px;
-      border: 1px solid rgba(255,255,255,0.06);
-      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-    }
-    .ok-compliance-card:hover {
-      border-color: rgba(211,177,124,0.15);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.04), 0 1px 3px rgba(0,0,0,0.4);
     }
     .ok-compliance-icon {
       flex-shrink: 0;
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       border-radius: 12px;
       background: rgba(211,177,124,0.1);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.3s;
-    }
-    .ok-compliance-card:hover .ok-compliance-icon {
-      background: rgba(211,177,124,0.18);
     }
     .ok-compliance-icon svg {
       width: 20px;
@@ -1348,59 +1025,12 @@
       .ok-compliance-card { padding: 24px 20px; }
     }
 
-    /* ── Stats counter bar ────────────────────────── */
-    #ok-stats-bar {
-      width: 100%;
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 0 40px;
-    }
-    .ok-stats-inner {
-      display: flex;
-      justify-content: center;
-      gap: 48px;
-      padding: 40px;
-      border-radius: 20px;
-      background: rgba(211,177,124,0.04);
-      border: 1px solid rgba(211,177,124,0.1);
-      flex-wrap: wrap;
-    }
-    .ok-stat-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      min-width: 120px;
-    }
-    .ok-stat-num {
-      font-family: "Manrope", sans-serif;
-      font-size: 36px;
-      font-weight: 800;
-      color: #D3B17C;
-      letter-spacing: -0.03em;
-    }
-    .ok-stat-txt {
-      font-family: "Manrope", sans-serif;
-      font-size: 14px;
-      color: rgba(255,255,255,0.45);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-weight: 600;
-    }
-    @media (max-width: 809px) {
-      #ok-stats-bar { padding: 0 20px; }
-      .ok-stats-inner { gap: 24px; padding: 28px 20px; }
-      .ok-stat-num { font-size: 28px; }
-      .ok-stat-txt { font-size: 12px; }
-      .ok-stat-block { min-width: 100px; }
-    }
-
   </style>
   <meta name="viewport" content="width=device-width">
   
-  <title>Opinion Kings – The Social Prediction Market</title>
+  <title>Opinion Kings – Finance Dashboard Template for Framer</title>
   <meta name="description"
-    content="Trade your beliefs on politics, crypto, culture and more. Opinion Kings is the first social prediction market — join the waitlist for early access.">
+    content="A modern Framer template for managing personal finances. Sync bank accounts, track expenses, set budgets, and make smarter money decisions with ease.">
   
   <link href="https://cdn.shopify.com/s/files/1/0920/7591/7591/files/1_682f1f70-234e-4a1d-9c86-260ba44c1387.png?v=1772224679" rel="icon"
     media="(prefers-color-scheme: light)">
@@ -1408,15 +1038,15 @@
     media="(prefers-color-scheme: dark)">
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Opinion Kings – The Social Prediction Market">
+  <meta property="og:title" content="Opinion Kings – Finance Dashboard Template for Framer">
   <meta property="og:description"
-    content="Trade your beliefs on politics, crypto, culture and more. Opinion Kings is the first social prediction market — join the waitlist for early access.">
+    content="A modern Framer template for managing personal finances. Sync bank accounts, track expenses, set budgets, and make smarter money decisions with ease.">
   <meta property="og:image" content="https://framerusercontent.com/images/fLPquwatsyLe6faVL057PVGuEOA.png">
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Opinion Kings – The Social Prediction Market">
+  <meta name="twitter:title" content="Opinion Kings – Finance Dashboard Template for Framer">
   <meta name="twitter:description"
-    content="Trade your beliefs on politics, crypto, culture and more. Opinion Kings is the first social prediction market — join the waitlist for early access.">
+    content="A modern Framer template for managing personal finances. Sync bank accounts, track expenses, set budgets, and make smarter money decisions with ease.">
   <meta name="twitter:image" content="https://framerusercontent.com/images/fLPquwatsyLe6faVL057PVGuEOA.png">
 
   <style data-framer-font-css>
@@ -5267,7 +4897,6 @@
         flex-direction: column;
         justify-content: flex-start;
         min-height: 100vh;
-        min-height: 100dvh;
         padding: 120px 20px 100px
       }
 

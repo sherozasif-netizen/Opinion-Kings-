@@ -36,28 +36,8 @@ app.use('/api/waitlist/join', joinLimiter);
 app.use('/api/waitlist/me', readLimiter);
 app.use('/api/waitlist/leaderboard', readLimiter);
 
-// ─── No-cache headers for HTML pages ────────────────────────────────
-app.use((req, res, next) => {
-  if (req.path.endsWith('.html') || req.path === '/') {
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-  }
-  next();
-});
-
 // ─── Serve static frontend (parent directory) ───────────────────────
-app.use(express.static(path.join(__dirname, '..'), {
-  etag: false,
-  lastModified: false,
-  setHeaders: (res, filePath) => {
-    if (filePath.endsWith('.html')) {
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-      res.setHeader('Pragma', 'no-cache');
-      res.setHeader('Expires', '0');
-    }
-  },
-}));
+app.use(express.static(path.join(__dirname, '..')));
 
 // ─── API routes ─────────────────────────────────────────────────────
 app.use('/api/waitlist', waitlistRoutes);
