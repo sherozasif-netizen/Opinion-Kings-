@@ -119,6 +119,8 @@ module.exports = async function handler(req, res) {
       phone: phone || null,
       referral_code: newCode,
       referrer_id: referrer ? referrer.id : null,
+      country_code: country,
+      ip_address: ip,
     });
     const user = inserted[0];
 
