@@ -282,10 +282,17 @@
           if (t === 'Features') { p.textContent = 'Markets'; navLinks[i].href = '#ok-markets-section'; }
           if (t === 'Pricing') { p.textContent = 'FAQ'; navLinks[i].href = '#faq'; }
         }
+        // Hide the Contact Us CTA button
+        var contactBtns = document.querySelectorAll('.framer-d2trik-container');
+        for (var i = 0; i < contactBtns.length; i++) {
+          contactBtns[i].style.display = 'none';
+        }
+        // Make Join Waitlist CTA trigger goToWaitlist (same as email field)
         var ctaBtn = document.querySelector('.framer-t14pul-container a');
         if (ctaBtn) {
-          ctaBtn.href = '#home';
+          ctaBtn.href = 'javascript:void(0)';
           ctaBtn.style.display = '';
+          ctaBtn.onclick = function(e) { e.preventDefault(); goToWaitlist(); };
           var bp = ctaBtn.querySelector('p');
           if (bp && bp.textContent.trim() !== 'Join Waitlist') bp.textContent = 'Join Waitlist';
         }
@@ -712,6 +719,10 @@
       padding: 0 !important;
     }
     .framer-1revpca-container {
+      display: none !important;
+    }
+    .framer-d2trik-container,
+    a[href*="contact.html"] {
       display: none !important;
     }
     .framer-t14pul-container {
