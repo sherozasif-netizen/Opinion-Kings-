@@ -282,6 +282,15 @@
           if (t === 'Features') { p.textContent = 'Markets'; navLinks[i].href = '#ok-markets-section'; }
           if (t === 'Pricing') { p.textContent = 'FAQ'; navLinks[i].href = '#faq'; }
         }
+        // Add "Waitlist Open" badge next to logo
+        var navBar = document.querySelector('.framer-ypgyrt');
+        if (navBar && !document.getElementById('ok-nav-badge')) {
+          var badge = document.createElement('span');
+          badge.id = 'ok-nav-badge';
+          badge.innerHTML = '<span class="ok-nav-badge-dot"></span>Waitlist Open';
+          var logoLink = navBar.querySelector('a');
+          if (logoLink) logoLink.parentNode.insertBefore(badge, logoLink.nextSibling);
+        }
         // Hide the Contact Us CTA button
         var contactBtns = document.querySelectorAll('.framer-d2trik-container');
         for (var i = 0; i < contactBtns.length; i++) {
@@ -346,18 +355,15 @@
           card.innerHTML = '<div class="ok-mc-tag"><span class="ok-mc-dot" style="background:' + m.color + '"></span>' + m.cat + ' · ' + m.sub + '</div>'
             + '<h3 class="ok-mc-question">' + m.q + '</h3>'
             + '<div class="ok-mc-resolve">' + m.resolve + '</div>'
-            // Price buttons
-            + '<div class="ok-mc-prices">'
-            + '<div class="ok-mc-price yes"><span class="ok-mc-price-val">' + m.yes + '¢</span><span class="ok-mc-price-label">YES</span></div>'
-            + '<div class="ok-mc-price no"><span class="ok-mc-price-val">' + m.no + '¢</span><span class="ok-mc-price-label">NO</span></div>'
-            + '</div>'
-            // Progress bar
-            + '<div class="ok-mc-bar"><div class="ok-mc-bar-yes" data-pct="' + m.yes + '"></div><div class="ok-mc-bar-no"></div></div>'
-            // Percentage boxes
+            // Video reel
+            + '<div class="ok-mc-reel"><video src="https://cdn.shopify.com/videos/c/o/v/6a3f8e09f831467084c05e4159ee45fe.mp4" autoplay muted loop playsinline></video></div>'
+            // Percentage boxes (YES / NO)
             + '<div class="ok-mc-pcts">'
             + '<div class="ok-mc-pct yes"><span class="ok-mc-pct-val">' + m.yes + '%</span><span class="ok-mc-pct-label">YES</span></div>'
             + '<div class="ok-mc-pct no"><span class="ok-mc-pct-val">' + m.no + '%</span><span class="ok-mc-pct-label">NO</span></div>'
             + '</div>'
+            // Progress bar
+            + '<div class="ok-mc-bar"><div class="ok-mc-bar-yes" data-pct="' + m.yes + '"></div><div class="ok-mc-bar-no"></div></div>'
             // Footer
             + '<div class="ok-mc-footer"><span>Vol: $' + m.vol.replace('$','') + '</span><span>' + m.voters + ' voters</span></div>';
           slider.appendChild(card);
@@ -415,7 +421,7 @@
           if (par && par.classList.contains('ssr-variant')) { par.style.display = 'none'; }
           else { hiwSections[h].style.display = 'none'; }
         }
-        var after = document.getElementById('ok-markets-section');
+        var after = document.getElementById('ok-referral-tiers');
         if (!after) return;
         var sec = document.createElement('section');
         sec.id = 'ok-referral-section';
@@ -547,10 +553,29 @@
         if (nav) nav.parentNode.insertBefore(wrap, nav);
         else document.body.insertBefore(wrap, document.body.firstChild);
       }
+      function injectHowYouEarn() {
+        if (!document.body) return;
+        if (document.getElementById('ok-how-you-earn')) return;
+        var after = document.getElementById('ok-markets-section');
+        if (!after) return;
+        var sec = document.createElement('section');
+        sec.id = 'ok-how-you-earn';
+        sec.innerHTML =
+          '<div class="ok-hye-inner">' +
+            '<div class="ok-hye-label">HOW IT WORKS</div>' +
+            '<h2 class="ok-hye-heading">Three Ways to Win <span>Before We Launch</span></h2>' +
+            '<div class="ok-hye-grid">' +
+              '<div class="ok-hye-card"><div class="ok-hye-num">01</div><div class="ok-hye-icon">&#9650;</div><h3>Climb the Waitlist</h3><p>Join early, refer friends, rise in rank. Higher rank = earlier access + bigger launch bonus.</p></div>' +
+              '<div class="ok-hye-card"><div class="ok-hye-num">02</div><div class="ok-hye-icon">&#36;</div><h3>Earn Referral Credits</h3><p>Every friend who joins earns you trading credits. Top referrers unlock cash bonuses and VIP status.</p></div>' +
+              '<div class="ok-hye-card"><div class="ok-hye-num">03</div><div class="ok-hye-icon">&#127919;</div><h3>Predict & Earn</h3><p>Place predictions on real-world events. If you\'re right, you earn real money. Starting at $5 per correct prediction.</p></div>' +
+            '</div>' +
+          '</div>';
+        after.parentNode.insertBefore(sec, after.nextSibling);
+      }
       function injectPerks() {
         if (!document.body) return;
         if (document.getElementById('ok-perks-section')) return;
-        var after = document.getElementById('ok-markets-section');
+        var after = document.getElementById('ok-how-you-earn');
         if (!after) return;
         var sec = document.createElement('section');
         sec.id = 'ok-perks-section';
@@ -567,10 +592,86 @@
           '</div>';
         after.parentNode.insertBefore(sec, after.nextSibling);
       }
+      function injectReferralTiers() {
+        if (!document.body) return;
+        if (document.getElementById('ok-referral-tiers')) return;
+        var after = document.getElementById('ok-perks-section');
+        if (!after) return;
+        var sec = document.createElement('section');
+        sec.id = 'ok-referral-tiers';
+        sec.innerHTML =
+          '<div class="ok-rt-inner">' +
+            '<div class="ok-rt-label">REFERRAL REWARDS</div>' +
+            '<h2 class="ok-rt-heading">Share More. <span>Earn More.</span></h2>' +
+            '<div class="ok-rt-grid">' +
+              '<div class="ok-rt-card"><div class="ok-rt-milestone">1</div><div class="ok-rt-ref">Referral</div><div class="ok-rt-reward">Skip 100 spots on the waitlist</div></div>' +
+              '<div class="ok-rt-card"><div class="ok-rt-milestone">5</div><div class="ok-rt-ref">Referrals</div><div class="ok-rt-reward">$10 trading credit bonus</div></div>' +
+              '<div class="ok-rt-card"><div class="ok-rt-milestone">25</div><div class="ok-rt-ref">Referrals</div><div class="ok-rt-reward">$75 trading credit bonus</div></div>' +
+              '<div class="ok-rt-card"><div class="ok-rt-milestone">50</div><div class="ok-rt-ref">Referrals</div><div class="ok-rt-reward">$300 credit + VIP Founding Trader badge</div></div>' +
+            '</div>' +
+          '</div>';
+        after.parentNode.insertBefore(sec, after.nextSibling);
+      }
+      function injectFaq() {
+        if (!document.body) return;
+        if (document.getElementById('ok-faq-section')) return;
+        var after = document.getElementById('ok-compliance-section');
+        if (!after) return;
+        // Hide Framer FAQ section
+        var framerFaq = document.querySelectorAll('section.framer-1rdywpe');
+        for (var f = 0; f < framerFaq.length; f++) {
+          var par = framerFaq[f].parentElement;
+          if (par && par.classList.contains('ssr-variant')) par.style.display = 'none';
+          else framerFaq[f].style.display = 'none';
+        }
+        var sec = document.createElement('section');
+        sec.id = 'ok-faq-section';
+        var faqItems = [
+          { q: 'What is Opinion Kings?', a: 'Opinion Kings is a social prediction market where you trade on real-world events — politics, crypto, sports, culture, and more. Think of it as a stock market for opinions, powered by community conviction.' },
+          { q: 'How does the waitlist work?', a: 'Sign up with your email to reserve your spot. Share your unique referral link to move up the queue. The higher your rank, the earlier you get access and the bigger your launch bonus.' },
+          { q: 'Is this legal in the US?', a: 'Yes. Opinion Kings is structured as event-based financial contracts within a U.S. regulatory framework. We are building compliance-first with licensed custodians and KYC/AML protocols built in from day one.' },
+          { q: 'What markets can I trade?', a: 'At launch, we\'ll offer markets across crypto, politics, macro economics, sports, AI, and culture. New markets are added weekly based on community demand and trending events.' },
+          { q: 'How much can I earn?', a: 'Earnings depend on your predictions. Correct predictions pay out real money — starting at $5 per correct prediction. Top traders on the leaderboard also earn bonus credits and VIP perks.' },
+          { q: 'When does Opinion Kings launch?', a: 'Beta access begins with early waitlist members in 2026. The earlier you join and the higher you rank, the sooner you\'ll get inside. Follow us on social for launch updates.' }
+        ];
+        var html = '<div class="ok-faq-inner"><div class="ok-faq-label">FAQ</div><h2 class="ok-faq-heading">Got Questions? <span>We\'ve Got Answers.</span></h2><div class="ok-faq-grid">';
+        for (var i = 0; i < faqItems.length; i++) {
+          html += '<div class="ok-faq-card"><h4>' + faqItems[i].q + '</h4><p>' + faqItems[i].a + '</p></div>';
+        }
+        html += '</div></div>';
+        sec.innerHTML = html;
+        after.parentNode.insertBefore(sec, after.nextSibling);
+      }
+      function injectSiteFooter() {
+        if (!document.body) return;
+        if (document.getElementById('ok-site-footer')) return;
+        var after = document.getElementById('ok-cta-footer');
+        if (!after) return;
+        // Hide Framer footer
+        var framerFooters = document.querySelectorAll('.framer-c03ypj, .framer-cl8wm7');
+        for (var f = 0; f < framerFooters.length; f++) {
+          framerFooters[f].style.display = 'none';
+        }
+        var footer = document.createElement('footer');
+        footer.id = 'ok-site-footer';
+        footer.innerHTML =
+          '<div class="ok-sf-inner">' +
+            '<div class="ok-sf-top">' +
+              '<div class="ok-sf-brand"><div class="ok-sf-logo">OK</div><span>Opinion Kings</span></div>' +
+              '<div class="ok-sf-cols">' +
+                '<div class="ok-sf-col"><h5>Product</h5><a href="javascript:void(0)" onclick="goToWaitlist()">Waitlist</a><a href="#ok-markets-section">Markets</a><a href="#ok-referral-section">Referral Program</a></div>' +
+                '<div class="ok-sf-col"><h5>Legal</h5><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="#ok-compliance-section">Compliance</a></div>' +
+                '<div class="ok-sf-col"><h5>Connect</h5><a href="https://x.com/OpinionKings" target="_blank" rel="noopener">Twitter / X</a><a href="https://discord.gg/opinionkings" target="_blank" rel="noopener">Discord</a><a href="mailto:hello@opinionkings.com">Email</a></div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="ok-sf-bottom"><span>&copy; 2026 Opinion Kings. All rights reserved.</span><span>Currently available in the USA only.</span></div>' +
+          '</div>';
+        after.parentNode.insertBefore(footer, after.nextSibling);
+      }
       function injectCtaFooter() {
         if (!document.body) return;
         if (document.getElementById('ok-cta-footer')) return;
-        var after = document.getElementById('ok-compliance-section');
+        var after = document.getElementById('ok-faq-section');
         if (!after) return;
         var sec = document.createElement('section');
         sec.id = 'ok-cta-footer';
@@ -696,10 +797,14 @@
         injectHiwTagline();
         injectTicker();
         injectMarkets();
+        injectHowYouEarn();
         injectPerks();
+        injectReferralTiers();
         injectReferral();
         injectCompliance();
+        injectFaq();
         injectCtaFooter();
+        injectSiteFooter();
         if (document.body) {
           sweepTextNodes(document.body);
           sweepAttributes(document.body);
@@ -968,7 +1073,7 @@
       letter-spacing: -0.04em;
       color: #fff;
       text-align: center;
-      margin: 0 0 60px;
+      margin: 0 0 56px;
     }
     .ok-markets-track {
       overflow-x: auto;
@@ -1036,45 +1141,20 @@
       text-transform: uppercase;
       margin-bottom: 16px;
     }
-    .ok-mc-prices {
-      display: flex;
-      gap: 10px;
+    /* Video reel */
+    .ok-mc-reel {
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
       margin-bottom: 14px;
     }
-    .ok-mc-price {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 14px 8px;
+    .ok-mc-reel video {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
       border-radius: 10px;
-      border: 1px solid;
     }
-    .ok-mc-price.yes {
-      background: rgba(76, 175, 80, 0.08);
-      border-color: rgba(76, 175, 80, 0.25);
-    }
-    .ok-mc-price.no {
-      background: rgba(229, 57, 53, 0.08);
-      border-color: rgba(229, 57, 53, 0.25);
-    }
-    .ok-mc-price-val {
-      font-family: "Manrope", sans-serif;
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-    .ok-mc-price.yes .ok-mc-price-val { color: #4CAF50; }
-    .ok-mc-price.no .ok-mc-price-val { color: #E53935; }
-    .ok-mc-price-label {
-      font-family: "Manrope", sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      margin-top: 4px;
-    }
-    .ok-mc-price.yes .ok-mc-price-label { color: rgba(76, 175, 80, 0.7); }
-    .ok-mc-price.no .ok-mc-price-label { color: rgba(229, 57, 53, 0.7); }
     /* Progress bar */
     .ok-mc-bar {
       display: flex;
@@ -1168,12 +1248,12 @@
       letter-spacing: 0.02em;
     }
     @media (max-width: 809px) {
-      #ok-markets-section { padding: 60px 16px; }
+      #ok-markets-section { padding: 60px 20px; }
       #ok-markets-section h2 { font-size: 32px; margin-bottom: 40px; }
       .ok-market-card { width: 290px; min-width: 290px; padding: 20px; }
       .ok-mc-question { font-size: 16px; min-height: 44px; }
-      .ok-mc-price-val { font-size: 24px; }
       .ok-mc-pct-val { font-size: 18px; }
+      .ok-mc-reel video { height: 130px; }
     }
     #ok-hiw-tagline {
       font-family: "Manrope", sans-serif;
@@ -1372,7 +1452,7 @@
     }
     #ok-compliance-section {
       width: 100%;
-      max-width: 1000px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 100px 40px;
     }
@@ -1657,12 +1737,347 @@
       #ok-cta-footer { padding: 80px 20px; }
     }
 
+    /* ─── NAV BADGE ─── */
+    #ok-nav-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      background: rgba(211, 177, 124, 0.1);
+      border: 1px solid rgba(211, 177, 124, 0.3);
+      border-radius: 100px;
+      font-family: "Manrope", sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: #D3B17C;
+      letter-spacing: 0.04em;
+      margin-left: 12px;
+      white-space: nowrap;
+    }
+    .ok-nav-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4CAF50;
+      display: inline-block;
+      animation: ok-badge-pulse 2s infinite;
+    }
+    @keyframes ok-badge-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    @media (max-width: 809px) {
+      #ok-nav-badge { display: none; }
+    }
+
+    /* ─── HOW YOU EARN ─── */
+    #ok-how-you-earn {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 40px;
+    }
+    .ok-hye-inner { max-width: 1200px; margin: 0 auto; }
+    .ok-hye-label {
+      font-family: "Manrope", sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: #D3B17C;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+    .ok-hye-heading {
+      font-family: "Manrope", sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #fff;
+      text-align: center;
+      margin: 0 0 56px;
+    }
+    .ok-hye-heading span { color: #D3B17C; }
+    .ok-hye-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .ok-hye-card {
+      background: rgba(13, 13, 13, 0.9);
+      border: 1px solid rgba(211, 177, 124, 0.1);
+      border-radius: 16px;
+      padding: 36px 28px;
+      position: relative;
+      transition: border-color 0.3s;
+    }
+    .ok-hye-card:hover { border-color: rgba(211, 177, 124, 0.25); }
+    .ok-hye-num {
+      font-family: "Manrope", sans-serif;
+      font-size: 64px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.03);
+      line-height: 1;
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      pointer-events: none;
+    }
+    .ok-hye-card:hover .ok-hye-num { color: rgba(211,177,124,0.06); }
+    .ok-hye-icon {
+      font-size: 28px;
+      display: block;
+      margin-bottom: 18px;
+    }
+    .ok-hye-card h3 {
+      font-family: "Manrope", sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.01em;
+      margin: 0 0 10px;
+    }
+    .ok-hye-card p {
+      font-family: "Manrope", sans-serif;
+      font-size: 14px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.7;
+      margin: 0;
+    }
+    @media (max-width: 809px) {
+      #ok-how-you-earn { padding: 60px 20px; }
+      .ok-hye-heading { font-size: 32px; margin-bottom: 36px; }
+      .ok-hye-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── REFERRAL TIERS ─── */
+    #ok-referral-tiers {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 40px;
+    }
+    .ok-rt-inner { max-width: 1200px; margin: 0 auto; }
+    .ok-rt-label {
+      font-family: "Manrope", sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: #D3B17C;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+    .ok-rt-heading {
+      font-family: "Manrope", sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #fff;
+      text-align: center;
+      margin: 0 0 56px;
+    }
+    .ok-rt-heading span { color: #D3B17C; }
+    .ok-rt-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .ok-rt-card {
+      background: rgba(13, 13, 13, 0.9);
+      border: 1px solid rgba(211, 177, 124, 0.1);
+      border-radius: 16px;
+      padding: 36px 24px;
+      text-align: center;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .ok-rt-card:hover { border-color: rgba(211, 177, 124, 0.3); transform: translateY(-4px); }
+    .ok-rt-milestone {
+      font-family: "Manrope", sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      color: #D3B17C;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .ok-rt-ref {
+      font-family: "Manrope", sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 18px;
+    }
+    .ok-rt-reward {
+      font-family: "Manrope", sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.5;
+    }
+    @media (max-width: 809px) {
+      #ok-referral-tiers { padding: 60px 20px; }
+      .ok-rt-heading { font-size: 32px; margin-bottom: 36px; }
+      .ok-rt-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ─── FAQ ─── */
+    #ok-faq-section {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 40px;
+    }
+    .ok-faq-inner { max-width: 1200px; margin: 0 auto; }
+    .ok-faq-label {
+      font-family: "Manrope", sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: #D3B17C;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+    .ok-faq-heading {
+      font-family: "Manrope", sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #fff;
+      text-align: center;
+      margin: 0 0 56px;
+    }
+    .ok-faq-heading span { color: #D3B17C; }
+    .ok-faq-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .ok-faq-card {
+      background: rgba(13, 13, 13, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 32px 28px;
+      transition: border-color 0.3s;
+    }
+    .ok-faq-card:hover { border-color: rgba(211, 177, 124, 0.2); }
+    .ok-faq-card h4 {
+      font-family: "Manrope", sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.01em;
+      margin: 0 0 12px;
+    }
+    .ok-faq-card p {
+      font-family: "Manrope", sans-serif;
+      font-size: 14px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.7;
+      margin: 0;
+    }
+    @media (max-width: 809px) {
+      #ok-faq-section { padding: 60px 20px; }
+      .ok-faq-heading { font-size: 32px; margin-bottom: 36px; }
+      .ok-faq-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── SITE FOOTER ─── */
+    #ok-site-footer {
+      width: 100%;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 60px 40px 40px;
+    }
+    .ok-sf-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .ok-sf-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 60px;
+      margin-bottom: 48px;
+    }
+    .ok-sf-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ok-sf-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #D3B17C;
+      color: #000;
+      font-family: "Manrope", sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ok-sf-brand span {
+      font-family: "Manrope", sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .ok-sf-cols {
+      display: flex;
+      gap: 80px;
+    }
+    .ok-sf-col h5 {
+      font-family: "Manrope", sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      margin: 0 0 16px;
+    }
+    .ok-sf-col a {
+      display: block;
+      font-family: "Manrope", sans-serif;
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      margin-bottom: 10px;
+      transition: color 0.2s;
+    }
+    .ok-sf-col a:hover { color: #D3B17C; }
+    .ok-sf-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .ok-sf-bottom span {
+      font-family: "Manrope", sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+    }
+    /* Hide Framer footer */
+    .framer-c03ypj, .framer-cl8wm7 { display: none !important; }
+    /* Hide Framer FAQ section */
+    section.framer-1rdywpe { display: none !important; }
+    @media (max-width: 809px) {
+      #ok-site-footer { padding: 40px 20px 30px; }
+      .ok-sf-top { flex-direction: column; gap: 36px; }
+      .ok-sf-cols { gap: 40px; }
+      .ok-sf-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    }
+
   </style>
   <meta name="viewport" content="width=device-width">
   
-  <title>Opinion Kings – Finance Dashboard Template for Framer</title>
+  <title>Opinion Kings — The Social Prediction Market</title>
   <meta name="description"
-    content="A modern Framer template for managing personal finances. Sync bank accounts, track expenses, set budgets, and make smarter money decisions with ease.">
+    content="Join the waitlist for Opinion Kings. Predict real-world events, earn trading credits, and compete on the leaderboard. Currently available in the USA.">
   
   <link href="https://cdn.shopify.com/s/files/1/0920/7591/7591/files/1_682f1f70-234e-4a1d-9c86-260ba44c1387.png?v=1772224679" rel="icon"
     media="(prefers-color-scheme: light)">
@@ -1670,15 +2085,15 @@
     media="(prefers-color-scheme: dark)">
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Opinion Kings – Finance Dashboard Template for Framer">
+  <meta property="og:title" content="Opinion Kings — The Social Prediction Market">
   <meta property="og:description"
-    content="A modern Framer template for managing personal finances. Sync bank accounts, track expenses, set budgets, and make smarter money decisions with ease.">
+    content="Join the waitlist for Opinion Kings. Predict real-world events, earn trading credits, and compete on the leaderboard. Currently available in the USA.">
   <meta property="og:image" content="https://framerusercontent.com/images/fLPquwatsyLe6faVL057PVGuEOA.png">
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Opinion Kings – Finance Dashboard Template for Framer">
+  <meta name="twitter:title" content="Opinion Kings — The Social Prediction Market">
   <meta name="twitter:description"
-    content="A modern Framer template for managing personal finances. Sync bank accounts, track expenses, set budgets, and make smarter money decisions with ease.">
+    content="Join the waitlist for Opinion Kings. Predict real-world events, earn trading credits, and compete on the leaderboard. Currently available in the USA.">
   <meta name="twitter:image" content="https://framerusercontent.com/images/fLPquwatsyLe6faVL057PVGuEOA.png">
 
   <style data-framer-font-css>
