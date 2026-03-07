@@ -282,15 +282,6 @@
           if (t === 'Features') { p.textContent = 'Markets'; navLinks[i].href = '#ok-markets-section'; }
           if (t === 'Pricing') { p.textContent = 'FAQ'; navLinks[i].href = '#faq'; }
         }
-        // Add "Waitlist Open" badge next to logo
-        var navBar = document.querySelector('.framer-ypgyrt');
-        if (navBar && !document.getElementById('ok-nav-badge')) {
-          var badge = document.createElement('span');
-          badge.id = 'ok-nav-badge';
-          badge.innerHTML = '<span class="ok-nav-badge-dot"></span>Waitlist Open';
-          var logoLink = navBar.querySelector('a');
-          if (logoLink) logoLink.parentNode.insertBefore(badge, logoLink.nextSibling);
-        }
         // Hide the Contact Us CTA button
         var contactBtns = document.querySelectorAll('.framer-d2trik-container');
         for (var i = 0; i < contactBtns.length; i++) {
