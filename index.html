@@ -659,13 +659,27 @@
           { q: 'How much can I earn?', a: 'Earnings depend on your predictions. Correct predictions pay out real money — starting at $5 per correct prediction. Top traders on the leaderboard also earn bonus credits and VIP perks.' },
           { q: 'When does Opinion Kings launch?', a: 'Beta access begins with early waitlist members in 2026. The earlier you join and the higher you rank, the sooner you\'ll get inside. Follow us on social for launch updates.' }
         ];
-        var html = '<div class="ok-faq-inner"><div class="ok-faq-label">FAQ</div><h2 class="ok-faq-heading">Got Questions? <span>We\'ve Got Answers.</span></h2><div class="ok-faq-grid">';
+        var html = '<div class="ok-faq-inner"><div class="ok-faq-label">FAQ</div><h2 class="ok-faq-heading">Got Questions? <span>We\'ve Got Answers.</span></h2><div class="ok-faq-accordion">';
         for (var i = 0; i < faqItems.length; i++) {
-          html += '<div class="ok-faq-card"><h4>' + faqItems[i].q + '</h4><p>' + faqItems[i].a + '</p></div>';
+          html += '<div class="ok-faq-item' + (i === 0 ? ' active' : '') + '" data-faq="' + i + '">' +
+            '<div class="ok-faq-q"><span>' + faqItems[i].q + '</span><span class="ok-faq-icon">+</span></div>' +
+            '<div class="ok-faq-a"><p>' + faqItems[i].a + '</p></div>' +
+          '</div>';
         }
         html += '</div></div>';
         sec.innerHTML = html;
         after.parentNode.insertBefore(sec, after.nextSibling);
+        // Accordion toggle
+        sec.addEventListener('click', function(e) {
+          var item = e.target.closest('.ok-faq-item');
+          if (!item) return;
+          var wasActive = item.classList.contains('active');
+          var allItems = sec.querySelectorAll('.ok-faq-item');
+          for (var j = 0; j < allItems.length; j++) {
+            allItems[j].classList.remove('active');
+          }
+          if (!wasActive) item.classList.add('active');
+        });
       }
       function injectSiteFooter() {
         if (!document.body) return;
@@ -2079,38 +2093,59 @@
       margin: 0 0 56px;
     }
     .ok-faq-heading span { color: #D3B17C; }
-    .ok-faq-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+    .ok-faq-accordion {
+      max-width: 800px;
+      margin: 0 auto;
     }
-    .ok-faq-card {
-      background: rgba(13, 13, 13, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 16px;
-      padding: 32px 28px;
-      transition: border-color 0.3s;
+    .ok-faq-item {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
-    .ok-faq-card:hover { border-color: rgba(211, 177, 124, 0.2); }
-    .ok-faq-card h4 {
+    .ok-faq-q {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0;
+      cursor: pointer;
       font-family: "Manrope", sans-serif;
-      font-size: 17px;
-      font-weight: 700;
+      font-size: 18px;
+      font-weight: 600;
       color: #fff;
       letter-spacing: -0.01em;
-      margin: 0 0 12px;
+      transition: color 0.3s;
     }
-    .ok-faq-card p {
+    .ok-faq-q:hover { color: #D3B17C; }
+    .ok-faq-icon {
+      font-size: 24px;
+      font-weight: 300;
+      color: #D3B17C;
+      transition: transform 0.3s;
+      flex-shrink: 0;
+      margin-left: 20px;
+    }
+    .ok-faq-item.active .ok-faq-icon {
+      transform: rotate(45deg);
+    }
+    .ok-faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      padding: 0 0;
+    }
+    .ok-faq-item.active .ok-faq-a {
+      max-height: 300px;
+      padding: 0 0 24px;
+    }
+    .ok-faq-a p {
       font-family: "Manrope", sans-serif;
-      font-size: 14px;
-      color: rgba(255,255,255,0.4);
+      font-size: 15px;
+      color: rgba(255,255,255,0.45);
       line-height: 1.7;
       margin: 0;
     }
     @media (max-width: 809px) {
       #ok-faq-section { padding: 60px 20px; }
       .ok-faq-heading { font-size: 32px; margin-bottom: 36px; }
-      .ok-faq-grid { grid-template-columns: 1fr; }
+      .ok-faq-q { font-size: 16px; padding: 20px 0; }
     }
 
     /* ─── SITE FOOTER ─── */
