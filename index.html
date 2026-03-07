@@ -642,32 +642,6 @@
           if (!wasActive) item.classList.add('active');
         });
       }
-      function injectSiteFooter() {
-        if (!document.body) return;
-        if (document.getElementById('ok-site-footer')) return;
-        var after = document.getElementById('ok-cta-footer');
-        if (!after) return;
-        // Hide Framer footer
-        var framerFooters = document.querySelectorAll('.framer-c03ypj, .framer-cl8wm7');
-        for (var f = 0; f < framerFooters.length; f++) {
-          framerFooters[f].style.display = 'none';
-        }
-        var footer = document.createElement('footer');
-        footer.id = 'ok-site-footer';
-        footer.innerHTML =
-          '<div class="ok-sf-inner">' +
-            '<div class="ok-sf-top">' +
-              '<div class="ok-sf-brand"><div class="ok-sf-logo">OK</div><span>Opinion Kings</span></div>' +
-              '<div class="ok-sf-cols">' +
-                '<div class="ok-sf-col"><h5>Product</h5><a href="javascript:void(0)" onclick="goToWaitlist()">Waitlist</a><a href="#ok-markets-section">Markets</a><a href="#ok-referral-section">Referral Program</a></div>' +
-                '<div class="ok-sf-col"><h5>Legal</h5><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></div>' +
-                '<div class="ok-sf-col"><h5>Connect</h5><a href="https://x.com/OpinionKings" target="_blank" rel="noopener">Twitter / X</a><a href="https://discord.gg/opinionkings" target="_blank" rel="noopener">Discord</a><a href="mailto:hello@opinionkings.com">Email</a></div>' +
-              '</div>' +
-            '</div>' +
-            '<div class="ok-sf-bottom"><span>&copy; 2026 Opinion Kings. All rights reserved.</span><span>Currently available in the USA only.</span></div>' +
-          '</div>';
-        after.parentNode.insertBefore(footer, after.nextSibling);
-      }
       function injectCtaFooter() {
         if (!document.body) return;
         if (document.getElementById('ok-cta-footer')) return;
@@ -803,7 +777,6 @@
         injectReferral();
         injectFaq();
         injectCtaFooter();
-        injectSiteFooter();
         if (document.body) {
           sweepTextNodes(document.body);
           sweepAttributes(document.body);
@@ -2039,93 +2012,10 @@
       .ok-faq-q { font-size: 16px; padding: 20px 0; }
     }
 
-    /* ─── SITE FOOTER ─── */
-    #ok-site-footer {
-      width: 100%;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 60px 40px 40px;
-    }
-    .ok-sf-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .ok-sf-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 60px;
-      margin-bottom: 48px;
-    }
-    .ok-sf-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .ok-sf-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: #D3B17C;
-      color: #000;
-      font-family: "Manrope", sans-serif;
-      font-size: 14px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .ok-sf-brand span {
-      font-family: "Manrope", sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: -0.02em;
-    }
-    .ok-sf-cols {
-      display: flex;
-      gap: 80px;
-    }
-    .ok-sf-col h5 {
-      font-family: "Manrope", sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      color: rgba(255,255,255,0.35);
-      text-transform: uppercase;
-      margin: 0 0 16px;
-    }
-    .ok-sf-col a {
-      display: block;
-      font-family: "Manrope", sans-serif;
-      font-size: 14px;
-      color: rgba(255,255,255,0.5);
-      text-decoration: none;
-      margin-bottom: 10px;
-      transition: color 0.2s;
-    }
-    .ok-sf-col a:hover { color: #D3B17C; }
-    .ok-sf-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 28px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-    .ok-sf-bottom span {
-      font-family: "Manrope", sans-serif;
-      font-size: 12px;
-      color: rgba(255,255,255,0.25);
-    }
     /* Hide Framer footer */
     .framer-c03ypj, .framer-cl8wm7 { display: none !important; }
     /* Hide Framer FAQ section */
     section.framer-1rdywpe { display: none !important; }
-    @media (max-width: 809px) {
-      #ok-site-footer { padding: 40px 20px 30px; }
-      .ok-sf-top { flex-direction: column; gap: 36px; }
-      .ok-sf-cols { gap: 40px; }
-      .ok-sf-bottom { flex-direction: column; gap: 8px; text-align: center; }
-    }
 
   </style>
   <meta name="viewport" content="width=device-width">
